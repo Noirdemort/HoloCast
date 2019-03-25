@@ -4,9 +4,7 @@ import pymongo
 app = Flask(__name__)
 
 
-
 client = pymongo.MongoClient("mongodb+srv://dexterLab:dyntyp-sejha6-sopcEc@holobase-upu74.gcp.mongodb.net/holocast?retryWrites=true")
-# db = client.test
 db = client.holocast
 building_data = db["building"]
 
@@ -31,9 +29,18 @@ def update_data(name):
                     "current": data["current"]
                 }
         })
-
     return redirect(url_for("home"))
 
 
+@app.route("/get_data")
+def send_data():
+    data = building_data.find()
+    data_string = ""
+    for i in data:
+        data_string += i['name'] + '$' + i['voltage'] + '$' + i['current']
+        data_string += "!#!"
+    return data_string
+
+
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
