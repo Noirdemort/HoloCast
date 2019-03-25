@@ -3,8 +3,8 @@ import pymongo
 
 app = Flask(__name__)
 
-
-client = pymongo.MongoClient("mongodb+srv://dexterLab:dyntyp-sejha6-sopcEc@holobase-upu74.gcp.mongodb.net/holocast?retryWrites=true")
+url = "mongodb+srv://dexterLab:dyntyp-sejha6-sopcEc@holobase-upu74.gcp.mongodb.net/holocast?retryWrites=true"
+client = pymongo.MongoClient(url)
 db = client.holocast
 building_data = db["building"]
 
