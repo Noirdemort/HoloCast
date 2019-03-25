@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Holo Server</title>
+       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="../static/materialize.css"  media="screen,projection"/>
+
+    <script src="../static/jquery.min.js"></script>
+    <script src="../static/materialize.js"></script>
+
+
+</head>
+<body>
+
+<div class="row">
+<form style="padding-left: 200px;text-align: center!important; width: 80%" action="post" method="/building/sjt">
+    <h2>SJT</h2>
+    <input type="number" name="voltage" placeholder="Volatge in V"><br>
+    <input type="number" name="ampere" placeholder="Current Value (in Amps)"> <br>
+    <input class="btn" type="submit" value="Update">
+</form>
+</div>
+<form style="padding-left: 200px;text-align: center; width: 80%;" action="post" method="/building/mb">
+    <h2>MB</h2>
+    <input type="number" name="voltage" placeholder="Volatge in V"> <br>
+    <input type="number" name="ampere" placeholder="Current Value (in Amps)"> <br>
+    <input class="btn" type="submit" value="Update">
+</form>
+
+<form style="padding-left: 200px;text-align: center; width: 80%" action="post" method="/building/tt">
+    <h2>TT</h2>
+    <input type="number" name="voltage" placeholder="Volatge in V"> <br>
+    <input type="number" name="ampere" placeholder="Current Value (in Amps)"> <br>
+    <input class="btn" type="submit" value="Update">
+</form>
+
+<form style="padding-left: 200px;text-align: center; width: 80%" action="post" method="/building/skb">
+    <h2>Suu Kyi Block</h2>
+    <input type="number" name="voltage" placeholder="Volatge in V"> <br>
+    <input type="number" name="ampere" placeholder="Current Value (in Amps)"> <br>
+    <input class="btn" type="submit" value="Update">
+</form>
+</body>
+</html>
