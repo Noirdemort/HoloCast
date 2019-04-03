@@ -22,25 +22,27 @@ def update_data(name):
     building = building_data.find_one({"name": name})
     if building is None:
         building_data.insert_one({"name": name, "voltage": data["voltage"], "current": data["current"], "frequency": data['frequency'], 'theta': data['theta']})
-        history.insert_one({"name": name, "voltage": [data["voltage"]], "current": [data["current"]], "frequency": [data['frequency']], 'theta': [data['theta']]})
         return redirect(url_for("home"))
 
     hist = history.find_one({"name": name})
-    hist['voltage'].append(building['voltage'])
-    hist['current'].append(building['current'])
-    hist['frequency'].append(building['frequency'])
-    hist['theta'].append(building['theta'])
+    if hist:
+        hist['voltage'].append(building['voltage'])
+        hist['current'].append(building['current'])
+        hist['frequency'].append(building['frequency'])
+        hist['theta'].append(building['theta'])
 
-    history.update_one(
-        {"name": name}, {
-            "$set": {
-                "name": name,
-                "voltage": hist["voltage"],
-                "current": hist["current"],
-                "frequency": hist["frequency"],
-                "theta": hist["theta"]
-            }
-        })
+        history.update_one(
+            {"name": name}, {
+                "$set": {
+                    "name": name,
+                    "voltage": hist["voltage"],
+                    "current": hist["current"],
+                    "frequency": hist["frequency"],
+                    "theta": hist["theta"]
+                }
+            })
+    else:
+        history.insert_one({"name": name, "voltage": [data["voltage"]], "current": [data["current"]], "frequency": [data['frequency']], 'theta': [data['theta']]})
 
     building_data.update_one(
         {"name": name}, {
