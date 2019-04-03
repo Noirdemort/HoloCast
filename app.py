@@ -8,6 +8,7 @@ url = "mongodb+srv://dexterLab:dyntyp-sejha6-sopcEc@holobase-upu74.gcp.mongodb.n
 client = pymongo.MongoClient(url)
 db = client.holocast
 building_data = db["building"]
+history = db["history"]
 
 
 @app.route("/")
@@ -20,16 +21,38 @@ def update_data(name):
     data = dict(request.form)
     building = building_data.find_one({"name": name})
     if building is None:
-        building_data.insert_one({"name": name, "voltage": data["voltage"], "current": data["current"]})
+        building_data.insert_one({"name": name, "voltage": data["voltage"], "current": data["current"], "frequency": data['frequency'], 'theta': data['theta']})
+        history.insert_one({"name": name, "voltage": [data["voltage"]], "current": [data["current"]], "frequency": [data['frequency']], 'theta': [data['theta']]})
         return redirect(url_for("home"))
+
+    hist = history.find_one({"name": name})
+    hist['voltage'].append(building['voltage'])
+    hist['current'].append(building['current'])
+    hist['frequency'].append(building['frequency'])
+    hist['theta'].append(building['theta'])
+
+    history.update_one(
+        {"name": name}, {
+            "$set": {
+                "name": name,
+                "voltage": hist["voltage"],
+                "current": hist["current"],
+                "frequency": hist["frequency"],
+                "theta": hist["theta"]
+            }
+        })
+
     building_data.update_one(
         {"name": name}, {
             "$set": {
                     "name": name,
                     "voltage": data["voltage"],
-                    "current": data["current"]
+                    "current": data["current"],
+                    "frequency": data["frequency"],
+                    "theta": data["theta"]
                 }
         })
+
     return redirect(url_for("home"))
 
 
@@ -38,9 +61,19 @@ def send_data():
     data = building_data.find()
     data_string = ""
     for i in data:
-        data_string += i['name'] + '$' + i['voltage'] + '$' + i['current']
+        data_string += i['name'] + '$' + i['voltage'] + '$' + i['current'] + '$' + i['frequency'] + '$' + i['theta']
         data_string += "!#!"
     return data_string
+
+
+@app.route("/fetch/<trace>")
+def send_sjt(trace):
+    data = building_data.find_one({"name": trace})
+    if not data:
+        data_string = f"Line Voltage: {data['voltage']}, Line Current: {data['current']}, Power: {(3**0.5)*data['voltage']*data['current']*data['theta']}"
+    else:
+        data_string = "No data!"
+    return data_string 
 
 
 if __name__ == '__main__':
