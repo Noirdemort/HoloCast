@@ -70,7 +70,7 @@ def send_data():
 def send_sjt(trace):
     data = building_data.find_one({"name": trace})
     if data:
-        data_string = f"Line Voltage: {data['voltage']}, Line Current: {data['current']}, Power: {(3**0.5)*float(data['voltage'])*float(data['current'])*float(data['theta'])}"
+        data_string = f"Line Voltage: {data['voltage']}, Line Current: {data['current']}, Power: {round((3**0.5)*float(data['voltage'])*float(data['current'])*float(data['theta']), 2)}"
     else:
         data_string = "No data!"
     return data_string 
