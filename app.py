@@ -19,6 +19,8 @@ def home():
 @app.route("/building/<name>", methods=["GET", "POST"])
 def update_data(name):
     data = dict(request.form)
+    if not (0 <= float(data['theta']) <= 1):
+        return "Power factor should be between 0 and 1"
     building = building_data.find_one({"name": name})
     if building is None:
         building_data.insert_one({"name": name, "voltage": data["voltage"], "current": data["current"], "frequency": data['frequency'], 'theta': data['theta']})
