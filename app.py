@@ -84,7 +84,7 @@ def send_sjt(trace):
 def send_tmp_sjt(trace):
     data = building_data.find_one({"name": trace})
     if data:
-        data_string = f"Reactive Power: {round(float(data['voltage'])*float(data['current'])*((1- float(data['theta'])**2)**0.5), 2)}, Apparent Power: {int(data['current'])*int(data['voltage'])},\n Frequency: {data['frequency']}"
+        data_string = f"Reactive Power: {round(float(data['voltage'])*float(data['current'])*((1- float(data['theta'])**2)**0.5), 2)}, \n Apparent Power: {int(data['current'])*int(data['voltage'])},\n Frequency: {data['frequency']}"
     else:
         data_string = "No data!"
     return data_string
