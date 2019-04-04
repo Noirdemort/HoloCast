@@ -78,6 +78,16 @@ def send_sjt(trace):
     return data_string 
 
 
+@app.route("/fetch_tmp/<trace>")
+def send_tmp_sjt(trace):
+    data = building_data.find_one({"name": trace})
+    if data:
+        data_string = f"Reactive Power: {data['voltage']*data['current']*((1- data['theta']**2)**0.5)}, Apparent Power: {data['current']*data['volatge']}, Frequency: {data['frequency']}"
+    else:
+        data_string = "No data!"
+    return data_string
+
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
