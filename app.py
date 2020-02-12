@@ -4,7 +4,7 @@ import os
 
 app = Flask(__name__)
 
-url = "mongodb+srv://dexterLab:dyntyp-sejha6-sopcEc@holobase-upu74.gcp.mongodb.net/holocast?retryWrites=true"
+url = "mongodb://localhost:27017/"
 client = pymongo.MongoClient(url)
 db = client.holocast
 building_data = db["building"]
